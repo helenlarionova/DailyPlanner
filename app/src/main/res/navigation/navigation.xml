@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/allDailyEventsFragment">
+    <fragment
+        android:id="@+id/allDailyEventsFragment"
+        android:name="com.example.android.dailyplanner.ui.AllDailyEventsFragment"
+        android:label="all_daily_events_fragment"
+        tools:layout="@layout/all_daily_events_fragment" >
+        <action
+            android:id="@+id/action_allDailyEventsFragment2_to_addNewEventFragment2"
+            app:destination="@id/addNewEventFragment" />
+        <action
+            android:id="@+id/action_allDailyEventsFragment2_to_eventDetailFragment2"
+            app:destination="@id/eventDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNewEventFragment"
+        android:name="com.example.android.dailyplanner.ui.AddNewEventFragment"
+        android:label="add_new_event_fragment"
+        tools:layout="@layout/add_new_event_fragment" />
+    <fragment
+        android:id="@+id/eventDetailFragment"
+        android:name="com.example.android.dailyplanner.ui.EventDetailFragment"
+        android:label="event_detail_fragment"
+        tools:layout="@layout/event_detail_fragment" />
+</navigation>

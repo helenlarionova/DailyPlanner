@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DailyPlanner</string>
+    <string name="title">Название</string>
+    <string name="Date">Дата</string>
+    <string name="time_start">Время начала</string>
+    <string name="start">Начало</string>
+    <string name="end">Конец</string>
+    <string name="description">Описание</string>
+</resources>
