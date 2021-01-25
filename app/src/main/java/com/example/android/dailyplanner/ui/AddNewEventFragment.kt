@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import com.example.android.dailyplanner.R
+import com.example.android.dailyplanner.databinding.AddNewEventFragmentBinding
 import com.example.android.dailyplanner.viewmodel.AddNewEventViewModel
 
 class AddNewEventFragment : Fragment() {
@@ -21,13 +23,19 @@ class AddNewEventFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.add_new_event_fragment, container, false)
+        val binding: AddNewEventFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.add_new_event_fragment, container, false)
+        viewModel = ViewModelProviders.of(this).get(AddNewEventViewModel::class.java)
+        binding.addNewEventViewModel = viewModel
+
+        binding.setLifecycleOwner(this)
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AddNewEventViewModel::class.java)
-        // TODO: Use the ViewModel
+
+
     }
 
 }
