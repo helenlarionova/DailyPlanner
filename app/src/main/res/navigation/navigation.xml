@@ -20,10 +20,24 @@
         android:id="@+id/addNewEventFragment"
         android:name="com.example.android.dailyplanner.ui.AddNewEventFragment"
         android:label="add_new_event_fragment"
-        tools:layout="@layout/add_new_event_fragment" />
+        tools:layout="@layout/add_new_event_fragment" >
+        <action
+            android:id="@+id/action_addNewEventFragment_to_allDailyEventsFragment"
+            app:destination="@id/allDailyEventsFragment" />
+        <action
+            android:id="@+id/action_addNewEventFragment_to_allDailyEventsFragment2"
+            app:popUpTo="@id/allDailyEventsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/eventDetailFragment"
         android:name="com.example.android.dailyplanner.ui.EventDetailFragment"
         android:label="event_detail_fragment"
-        tools:layout="@layout/event_detail_fragment" />
+        tools:layout="@layout/event_detail_fragment" >
+        <action
+            android:id="@+id/action_eventDetailFragment_to_allDailyEventsFragment"
+            app:destination="@id/allDailyEventsFragment" />
+        <argument
+            android:name="eventId"
+            app:argType="long" />
+    </fragment>
 </navigation>

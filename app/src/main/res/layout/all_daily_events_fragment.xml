@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
 
-        <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
+        <com.applandeo.materialcalendarview.CalendarView
             android:id="@+id/calendarContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
@@ -23,15 +23,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/recyclerView"
-            app:primaryColor="@color/primaryColor"
-            app:textColor="@android:color/white"
-            app:selectedItem_textColor="@color/colorAccent"
-            app:todayItem_textColor="@color/colorAccent"
-            app:todayItem_background="@drawable/circle_white_stroke_background"
-            app:selectedItem_background="@drawable/circle_white_solid_background"
-            app:buttonLeft_drawableTintColor="@android:color/white"
-            app:buttonRight_drawableTintColor="@android:color/white"
-            app:expandIconColor="@android:color/white"/>
+            app:headerColor="@color/primaryColor"
+            app:todayLabelColor="@color/colorAccent"
+            app:selectionColor="@color/primaryColor"/>
         
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
