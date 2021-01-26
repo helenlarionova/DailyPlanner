@@ -7,8 +7,7 @@ import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.repository.Repository
 import kotlinx.coroutines.*
 
-class AddNewEventViewModel (): ViewModel() {
-    val repository = Repository()
+class AddNewEventViewModel (val repository : Repository): ViewModel() {
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 

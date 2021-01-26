@@ -1,6 +1,5 @@
 package com.example.android.dailyplanner.ui
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.databinding.AddNewEventFragmentBinding
 import com.example.android.dailyplanner.viewmodel.AddNewEventViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class AddNewEventFragment : Fragment() {
 
@@ -20,19 +20,18 @@ class AddNewEventFragment : Fragment() {
         fun newInstance() = AddNewEventFragment()
     }
 
-    private lateinit var viewModel: AddNewEventViewModel
+    private val viewModel by viewModel<AddNewEventViewModel> ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: com.example.android.dailyplanner.databinding.AddNewEventFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.add_new_event_fragment, container, false)
-        viewModel = ViewModelProviders.of(this).get(AddNewEventViewModel::class.java)
+        val binding: AddNewEventFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.add_new_event_fragment, container, false)
         binding.addNewEventViewModel = viewModel
 
         binding.setLifecycleOwner(this)
 
-        viewModel.navigationToAllDailyEvents.observe(viewLifecycleOwner, Observer {
+        viewModel.navigationToAllDailyEvents.observe(viewLifecycleOwner, Observer{
             if (it){
                 this.findNavController().navigate(R.id.action_addNewEventFragment_to_allDailyEventsFragment)
                 viewModel.doneNavigating()

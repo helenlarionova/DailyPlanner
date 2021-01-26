@@ -1,6 +1,6 @@
 package com.example.android.dailyplanner.ui
 
-import androidx.lifecycle.ViewModelProviders
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.viewmodel.EventDetailViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class EventDetailFragment : Fragment() {
 
@@ -15,7 +16,7 @@ class EventDetailFragment : Fragment() {
         fun newInstance() = EventDetailFragment()
     }
 
-    private lateinit var viewModel: EventDetailViewModel
+    private val viewModel by viewModel<EventDetailViewModel> ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +27,6 @@ class EventDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(EventDetailViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

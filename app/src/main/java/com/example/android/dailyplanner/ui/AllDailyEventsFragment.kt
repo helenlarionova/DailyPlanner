@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.applandeo.materialcalendarview.EventDay
@@ -15,6 +14,8 @@ import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.databinding.AllDailyEventsFragmentBinding
 import com.example.android.dailyplanner.viewmodel.AllDailyEventsViewModel
 import kotlinx.android.synthetic.main.all_daily_events_fragment.*
+import org.koin.android.viewmodel.ext.android.getViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 class AllDailyEventsFragment : Fragment() {
@@ -23,7 +24,7 @@ class AllDailyEventsFragment : Fragment() {
         fun newInstance() = AllDailyEventsFragment()
     }
 
-    private lateinit var viewModel: AllDailyEventsViewModel
+    private val viewModel by viewModel<AllDailyEventsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +36,6 @@ class AllDailyEventsFragment : Fragment() {
             container,
             false
         )
-
-        viewModel = ViewModelProviders.of(this).get(AllDailyEventsViewModel::class.java)
 
         binding.viewModel = viewModel
 

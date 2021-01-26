@@ -8,9 +8,8 @@ import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.repository.Repository
 import java.util.*
 
-class AllDailyEventsViewModel : ViewModel() {
+class AllDailyEventsViewModel (val repository: Repository) : ViewModel() {
 
-    val repository = Repository()
     lateinit var events : LiveData<List<Event>>
 
     private val today = MutableLiveData<Date>()
