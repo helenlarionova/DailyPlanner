@@ -6,35 +6,40 @@ import androidx.lifecycle.ViewModel
 import com.applandeo.materialcalendarview.EventDay
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.repository.Repository
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AllDailyEventsViewModel (val repository: Repository) : ViewModel() {
 
-    lateinit var events : LiveData<List<Event>>
+    private var _events = MutableLiveData<List<Event>>()
+    val events: LiveData<List<Event>> = _events
 
-    private val today = MutableLiveData<Date>()
+    private var _selectedDay = MutableLiveData<String>()
+    val selectedDay: LiveData<String> = _selectedDay
+    val formatter = SimpleDateFormat("ddMMMMyyyy", Locale.getDefault())
 
     init {
-        today.value = Date(System.currentTimeMillis())
-        TODO("инициализировать список из репозитория по дате")
-        //events = getAllDailyEvents()
+        val currentDate = formatter.format(Calendar.getInstance().time)
+        _selectedDay.postValue(currentDate)
+        _events.postValue(getAllDailyEvents(currentDate))
+
     }
 
-    private fun getAllDailyEvents(date: Long) {
-            repository.getAllDailyEvents(date)
+    private fun getAllDailyEvents(date: String) : List<Event> {
+            return repository.getAllDailyEvents(date)
     }
-
-    private val selectedDay = MutableLiveData<Date>()
-    val _selectedDay: LiveData<Date> = selectedDay
 
     fun onDayClicked(eventDay: EventDay){
-        selectedDay.postValue(eventDay.calendar.time)
+        val selected = eventDay.calendar.time
+        val selectedDate = formatter.format(selected)
+        _selectedDay.value = selectedDate
+        _events.value = getAllDailyEvents(selectedDate)
     }
 
-    private val _navigateToEventDetailFragment = MutableLiveData<Long>()
-    val navigateToEventDetailFragment:LiveData<Long> = _navigateToEventDetailFragment
+    private val _navigateToEventDetailFragment = MutableLiveData<String>()
+    val navigateToEventDetailFragment:LiveData<String> = _navigateToEventDetailFragment
 
-    fun onEventItemClicked(id: Long){
+    fun onEventItemClicked(id: String){
         _navigateToEventDetailFragment.value = id
     }
 

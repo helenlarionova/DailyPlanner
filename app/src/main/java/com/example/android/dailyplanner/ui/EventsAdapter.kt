@@ -58,7 +58,7 @@ class EventDiffCallback:
     }
 }
 
-class EventListener(val clickListener: (eventId: Long) -> Unit) {
+class EventListener(val clickListener: (eventId: String) -> Unit) {
     fun onClick(event: Event) = clickListener(event.id)
 }
 

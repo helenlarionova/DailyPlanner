@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -37,6 +38,9 @@ class AllDailyEventsFragment : Fragment() {
             false
         )
 
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
+
         binding.viewModel = viewModel
 
         binding.setLifecycleOwner(this)
@@ -49,10 +53,6 @@ class AllDailyEventsFragment : Fragment() {
             override fun onDayClick(eventDay: EventDay) {
                 viewModel.onDayClicked(eventDay)
             }
-
-        })
-
-        viewModel._selectedDay.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
         })
 

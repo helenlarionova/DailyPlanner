@@ -8,9 +8,6 @@ import com.example.android.dailyplanner.repository.Repository
 import kotlinx.coroutines.*
 
 class AddNewEventViewModel (val repository : Repository): ViewModel() {
-    private val viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
     private val _eventLiveData = MutableLiveData<Event>()
     val eventLiveData: LiveData<Event> = _eventLiveData
 
@@ -27,10 +24,8 @@ class AddNewEventViewModel (val repository : Repository): ViewModel() {
 
 
     fun onSave(){
-        uiScope.launch {
-            _eventLiveData.value?.let {
-                insert(it)
-            }
+        _eventLiveData.value?.let {
+            repository.insertEvent(it)
         }
        _navigationToAllDailyEvents.value = true
     }

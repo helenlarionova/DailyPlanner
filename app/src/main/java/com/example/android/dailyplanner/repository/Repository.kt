@@ -9,16 +9,16 @@ class Repository () : IRepository {
 
     private val databaseReference = FirebaseDatabase.getInstance().reference
     private val query = databaseReference.child("events")
-    private var eventList = arrayListOf<Event>()
-    private val events = MutableLiveData<List<Event>>()
 
-    override fun getAllDailyEvents(date : Long): MutableLiveData<List<Event>> {
-        query.child(date.toString()).addValueEventListener(object :ValueEventListener{
+
+    override fun getAllDailyEvents(date : String): List<Event> {
+        var eventList = arrayListOf<Event>()
+        query.child(date).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { dataSnapshot ->
                         if (dataSnapshot.exists()) {
-                            eventList.add(dataSnapshot?.value as Event)
+                            eventList.add(dataSnapshot?.getValue(Event :: class.java)!!)
                         }
 
                     }
@@ -30,8 +30,7 @@ class Repository () : IRepository {
             }
 
         })
-        events.value = eventList
-        return events
+        return eventList
     }
 
     override fun getEvent(eventId: Long): Event? {
