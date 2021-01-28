@@ -1,9 +1,12 @@
 package com.example.android.dailyplanner.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.android.dailyplanner.entity.Event
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Repository () : IRepository {
 
@@ -11,14 +14,14 @@ class Repository () : IRepository {
     private val query = databaseReference.child("events")
 
 
-    override fun getAllDailyEvents(date : String): List<Event> {
+    override fun getAllDailyEvents(date: String): List<Event> {
         var eventList = arrayListOf<Event>()
-        query.child(date).addValueEventListener(object : ValueEventListener{
+        query.child(date).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { dataSnapshot ->
                         if (dataSnapshot.exists()) {
-                            eventList.add(dataSnapshot?.getValue(Event :: class.java)!!)
+                            eventList.add(dataSnapshot?.getValue(Event::class.java)!!)
                         }
 
                     }
@@ -38,7 +41,12 @@ class Repository () : IRepository {
     }
 
     override fun insertEvent(event: Event) {
-        query.child(event.id.toString()).setValue(event)
+        val eventId = query.push().getKey()
+        event.id = eventId.toString()
+        val date = Date(event.startTime.toLong())
+        val formatter = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
+        val dateStr = formatter.format(date)
+        query.child(dateStr).child(event.id).setValue(event)
     }
 
     override fun updateEvent(event: Event) {

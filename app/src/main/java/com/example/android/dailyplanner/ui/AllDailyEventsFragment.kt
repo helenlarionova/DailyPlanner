@@ -14,10 +14,7 @@ import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.databinding.AllDailyEventsFragmentBinding
 import com.example.android.dailyplanner.viewmodel.AllDailyEventsViewModel
-import kotlinx.android.synthetic.main.all_daily_events_fragment.*
-import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.*
 
 class AllDailyEventsFragment : Fragment() {
 
@@ -25,7 +22,7 @@ class AllDailyEventsFragment : Fragment() {
         fun newInstance() = AllDailyEventsFragment()
     }
 
-    private val viewModel by viewModel<AllDailyEventsViewModel>()
+    private val _viewModel by viewModel<AllDailyEventsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +38,7 @@ class AllDailyEventsFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
 
-        binding.viewModel = viewModel
+        binding.viewModel = _viewModel
 
         binding.setLifecycleOwner(this)
 
@@ -51,29 +48,29 @@ class AllDailyEventsFragment : Fragment() {
 
         binding.calendarContainer.setOnDayClickListener(object : OnDayClickListener{
             override fun onDayClick(eventDay: EventDay) {
-                viewModel.onDayClicked(eventDay)
+                _viewModel.onDayClicked(eventDay)
             }
 
         })
 
         val adapter = EventsAdapter(
             EventListener { eventId ->
-                viewModel.onEventItemClicked(eventId)
+                _viewModel.onEventItemClicked(eventId)
             })
 
         binding.recyclerView.adapter = adapter
 
-        viewModel.navigateToEventDetailFragment.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        _viewModel.navigateToEventDetailFragment.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it?.let {
-                this.findNavController().navigate(R.id.action_allDailyEventsFragment2_to_eventDetailFragment2
-                )
+                this.findNavController().navigate(R.id.action_allDailyEventsFragment_to_eventDetailFragment)
             }
 
         })
 
-        viewModel.events.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        _viewModel.events.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it?.let {
                 adapter.submitList(it)
+
             }
         })
 

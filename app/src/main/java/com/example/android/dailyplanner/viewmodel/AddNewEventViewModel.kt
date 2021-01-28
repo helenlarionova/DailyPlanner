@@ -30,11 +30,6 @@ class AddNewEventViewModel (val repository : Repository): ViewModel() {
        _navigationToAllDailyEvents.value = true
     }
 
-    private suspend fun insert(event: Event) {
-        withContext(Dispatchers.IO) {
-            repository.insertEvent(event)
-        }
-    }
 
 
 }

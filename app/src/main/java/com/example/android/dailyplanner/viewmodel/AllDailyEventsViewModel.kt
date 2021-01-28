@@ -16,7 +16,7 @@ class AllDailyEventsViewModel (val repository: Repository) : ViewModel() {
 
     private var _selectedDay = MutableLiveData<String>()
     val selectedDay: LiveData<String> = _selectedDay
-    val formatter = SimpleDateFormat("ddMMMMyyyy", Locale.getDefault())
+    val formatter = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
 
     init {
         val currentDate = formatter.format(Calendar.getInstance().time)
