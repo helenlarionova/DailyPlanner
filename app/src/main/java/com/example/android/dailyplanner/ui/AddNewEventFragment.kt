@@ -85,8 +85,8 @@ class AddNewEventFragment : Fragment() {
 
     private fun saveEvent() {
         if (_viewModel.eventLiveData.value?.name.isNullOrBlank() ||
-            _viewModel.eventLiveData.value?.startTime.isNullOrBlank() ||
-            _viewModel.eventLiveData.value?.endTime.isNullOrBlank()){
+            _viewModel.eventLiveData.value?.startTime.toString().isNullOrEmpty() ||
+            _viewModel.eventLiveData.value?.endTime.toString().isNullOrEmpty()){
             Toast.makeText(context, getString(R.string.empty_field_warning), Toast.LENGTH_SHORT).show()
             return
         }else{

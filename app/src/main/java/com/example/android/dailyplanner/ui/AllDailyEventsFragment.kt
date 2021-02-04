@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener
@@ -43,8 +44,10 @@ class AllDailyEventsFragment : Fragment() {
         binding.setLifecycleOwner(this)
 
         binding.fab.setOnClickListener { view: View ->
-            Navigation.findNavController(view).navigate(R.id.action_allDailyEventsFragment2_to_addNewEventFragment2)
+            view.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToAddNewEventFragment(binding.calendarContainer.firstSelectedDate.time))
+            Navigation.findNavController(view).navigate(R.id.action_allDailyEventsFragment_to_addNewEventFragment)
         }
+
 
         binding.calendarContainer.setOnDayClickListener(object : OnDayClickListener{
             override fun onDayClick(eventDay: EventDay) {
@@ -62,7 +65,7 @@ class AllDailyEventsFragment : Fragment() {
 
         _viewModel.navigateToEventDetailFragment.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it?.let {
-                this.findNavController().navigate(R.id.action_allDailyEventsFragment_to_eventDetailFragment)
+                this.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToEventDetailFragment(it))
             }
 
         })

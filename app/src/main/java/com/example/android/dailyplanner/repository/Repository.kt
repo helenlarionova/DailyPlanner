@@ -1,59 +1,73 @@
 package com.example.android.dailyplanner.repository
 
-import com.example.android.dailyplanner.entity.Event
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import java.text.SimpleDateFormat
+import com.example.android.dailyplanner.entity.EventRepo
+import com.example.android.dailyplanner.extensions.atEndOfDay
+import com.example.android.dailyplanner.extensions.atStartOfDay
+import com.google.firebase.firestore.FirebaseFirestore
+import java.lang.Exception
 import java.util.*
+import kotlin.collections.ArrayList
 
-class Repository () : IRepository {
+interface EventCallBack{
+    fun onSuccess(list: List<EventRepo>)
+    fun onError(exception: Exception)
+}
+class Repository (val store : FirebaseFirestore) : IRepository {
 
-    private val databaseReference = FirebaseDatabase.getInstance().reference
-    private val query = databaseReference.child("events")
+    private val db = store.collection(COLLECTION_EVENTS)
 
 
-    override fun getAllDailyEvents(date: String): List<Event> {
-        var eventList = arrayListOf<Event>()
-        query.child(date).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    snapshot.children.forEach { dataSnapshot ->
-                        if (dataSnapshot.exists()) {
-                            eventList.add(dataSnapshot?.getValue(Event::class.java)!!)
-                        }
+    override fun getAllDailyEvents(date: Date, callback: EventCallBack) {
 
+        db.whereGreaterThanOrEqualTo("startTime", date.atStartOfDay()!!)
+            .get()
+            .addOnSuccessListener{ task ->
+                val eventList = ArrayList<EventRepo>()
+                task.documents.forEach {
+                    val event = it.toObject(EventRepo::class.java)!!
+                    if (event.endTime <= date.atEndOfDay()) {
+                        eventList.add(event)
                     }
                 }
+                callback.onSuccess(eventList)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+            .addOnFailureListener { exception ->
+                callback.onError(exception)
             }
 
-        })
-        return eventList
     }
 
-    override fun getEvent(eventId: Long): Event? {
-        TODO("Not yet implemented")
+    override fun getEvent(eventId: String): EventRepo? {
+        var event: EventRepo? = EventRepo()
+        db.document(eventId).get().addOnSuccessListener {document ->
+            if (document.exists()){
+                event = document.toObject(EventRepo::class.java)
+            }
+
+        }
+        return event
     }
 
-    override fun insertEvent(event: Event) {
-        val eventId = query.push().getKey()
-        event.id = eventId.toString()
-        val date = Date(event.startTime.toLong())
-        val formatter = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
-        val dateStr = formatter.format(date)
-        query.child(dateStr).child(event.id).setValue(event)
+    override fun insertEvent(event: EventRepo) {
+        val docRef = db.document()
+        val eventId = docRef.id
+        event.id = eventId
+        docRef.set(event)
     }
 
-    override fun updateEvent(event: Event) {
-        TODO("Not yet implemented")
+    override fun updateEvent(event: EventRepo) {
+        val eventRef = db.document(event.id)
+        eventRef.set(event)
+
     }
 
-    override fun deleteEvent(event: Event) {
-        query.child(event.id.toString()).removeValue()
+    override fun deleteEvent(event: EventRepo) {
+        val eventRef = db.document(event.id)
+        eventRef.delete()
+    }
+
+    companion object {
+        const  val  COLLECTION_EVENTS  =  "events"
     }
 }

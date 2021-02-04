@@ -1,12 +1,12 @@
 package com.example.android.dailyplanner.repository
 
-import androidx.lifecycle.LiveData
-import com.example.android.dailyplanner.entity.Event
+import com.example.android.dailyplanner.entity.EventRepo
+import java.util.*
 
 interface IRepository {
-    fun getAllDailyEvents(date : String): List<Event>
-    fun getEvent(eventId: Long) : Event?
-    fun insertEvent(event: Event)
-    fun updateEvent(event: Event)
-    fun deleteEvent(event: Event)
+    fun getAllDailyEvents(date: Date, callback: EventCallBack)
+    fun getEvent(eventId: String) : EventRepo?
+    fun insertEvent(event: EventRepo)
+    fun updateEvent(event: EventRepo)
+    fun deleteEvent(event: EventRepo)
 }

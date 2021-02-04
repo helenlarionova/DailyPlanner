@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.android.dailyplanner.entity.Event
+import com.example.android.dailyplanner.entity.EventRepo
+import com.example.android.dailyplanner.interactor.Interactor
 import com.example.android.dailyplanner.repository.Repository
-import kotlinx.coroutines.*
 
-class AddNewEventViewModel (val repository : Repository): ViewModel() {
+class AddNewEventViewModel (val interactor: Interactor ): ViewModel() {
     private val _eventLiveData = MutableLiveData<Event>()
     val eventLiveData: LiveData<Event> = _eventLiveData
 
@@ -25,7 +26,7 @@ class AddNewEventViewModel (val repository : Repository): ViewModel() {
 
     fun onSave(){
         _eventLiveData.value?.let {
-            repository.insertEvent(it)
+            interactor.onSave(it)
         }
        _navigationToAllDailyEvents.value = true
     }
