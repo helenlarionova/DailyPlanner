@@ -2,20 +2,27 @@ package com.example.android.dailyplanner.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.databinding.AddNewEventFragmentBinding
+import com.example.android.dailyplanner.extensions.toDate
 import com.example.android.dailyplanner.extensions.toEditable
+import com.example.android.dailyplanner.extensions.toStringWithFormat
 import com.example.android.dailyplanner.extensions.twoDigits
+import com.example.android.dailyplanner.utils.dateFormatPatternWithSlash
 import com.example.android.dailyplanner.viewmodel.AddNewEventViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -33,6 +40,20 @@ class AddNewEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, R.layout.add_new_event_fragment, container, false)
+
+        (activity as AppCompatActivity).setSupportActionBar(_binding.toolbar)
+        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
+        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true);
+        _binding.toolbar.setNavigationOnClickListener{
+            it.findNavController().navigate(AddNewEventFragmentDirections.actionAddNewEventFragmentToAllDailyEventsFragment())
+            _viewModel.doneNavigating()
+            hideKeyboard()
+        }
+
+        val args = AddNewEventFragmentArgs.fromBundle(requireArguments())
+        val selectedDate = args.selectedDate
+        _viewModel.load(selectedDate)
+
         _binding.addNewEventViewModel = _viewModel
 
         _binding.setLifecycleOwner(this)
@@ -41,6 +62,7 @@ class AddNewEventFragment : Fragment() {
             it?.let{
                 this.findNavController().navigate(R.id.action_addNewEventFragment_to_allDailyEventsFragment)
                 _viewModel.doneNavigating()
+                hideKeyboard()
 
 
             }
@@ -92,6 +114,12 @@ class AddNewEventFragment : Fragment() {
         }else{
             _viewModel.onSave()
         }
+    }
+
+    fun hideKeyboard() {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
 }

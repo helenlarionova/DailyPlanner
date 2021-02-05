@@ -30,23 +30,20 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 android:theme = "@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
-                app:title="@{viewModel.selectedDay}"/>
+                app:title="@{viewModel.selectedDayStr}"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-
-        <com.applandeo.materialcalendarview.CalendarView
+        <CalendarView
             android:id="@+id/calendarContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView"
-            app:headerColor="@color/primaryColor"
-            app:todayLabelColor="@color/colorAccent"
-            app:selectionColor="@color/primaryColor"/>
-        
+            app:layout_constraintBottom_toTopOf="@id/recyclerView" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

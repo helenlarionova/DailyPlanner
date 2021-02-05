@@ -10,12 +10,12 @@
         android:label="all_daily_events_fragment"
         tools:layout="@layout/all_daily_events_fragment" >
         <action
-            android:id="@+id/action_allDailyEventsFragment_to_addNewEventFragment"
-            app:destination="@id/addNewEventFragment" />
-        <action
             android:id="@+id/action_allDailyEventsFragment_to_eventDetailFragment"
             app:destination="@id/eventDetailFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_allDailyEventsFragment_to_addNewEventFragment"
+            app:destination="@id/addNewEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/addNewEventFragment"
@@ -24,13 +24,15 @@
         tools:layout="@layout/add_new_event_fragment" >
         <action
             android:id="@+id/action_addNewEventFragment_to_allDailyEventsFragment"
-            app:destination="@id/allDailyEventsFragment" />
+            app:destination="@id/allDailyEventsFragment"
+            app:popUpTo="@id/allDailyEventsFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_addNewEventFragment_to_allDailyEventsFragment2"
             app:popUpTo="@id/allDailyEventsFragment" />
         <argument
             android:name="selectedDate"
-            app:argType="java.util.Date" />
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/eventDetailFragment"

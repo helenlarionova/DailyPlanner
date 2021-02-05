@@ -3,14 +3,17 @@ package com.example.android.dailyplanner.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.applandeo.materialcalendarview.EventDay
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.entity.EventRepo
 import com.example.android.dailyplanner.interactor.Interactor
 import com.example.android.dailyplanner.repository.EventCallBack
-import com.example.android.dailyplanner.repository.Repository
+import com.example.android.dailyplanner.utils.dateFormatPatternFull
+import com.example.android.dailyplanner.utils.localDateTimeToDate
 import java.lang.Exception
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Month
 import java.util.*
 
 class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventCallBack {
@@ -18,14 +21,19 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventC
     private var _events = MutableLiveData<List<Event>>()
     val events: LiveData<List<Event>> = _events
 
-    private var _selectedDay = MutableLiveData<String>()
-    val selectedDay: LiveData<String> = _selectedDay
-    val formatter = SimpleDateFormat("d MMMM yyyy", Locale.getDefault())
+    private var _selectedDayStr = MutableLiveData<String>()
+    val selectedDayStr: LiveData<String> = _selectedDayStr
+
+    private var _selectedDate = MutableLiveData<Date>()
+    val selectedDate: LiveData<Date> = _selectedDate
+
+    val formatter = SimpleDateFormat(dateFormatPatternFull, Locale.getDefault())
 
     init {
         val currentDate = Calendar.getInstance().time
         val currentDateString = formatter.format(currentDate)
-        _selectedDay.postValue(currentDateString)
+        _selectedDate.postValue(currentDate)
+        _selectedDayStr.postValue(currentDateString)
         getAllDailyEvents(currentDate)
 
     }
@@ -34,11 +42,13 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventC
             interactor.getAllDailyEvents(date, this)
     }
 
-    fun onDayClicked(eventDay: EventDay){
-        val selected = eventDay.calendar.time
-        val selectedDateString = formatter.format(selected)
-        _selectedDay.value = selectedDateString
-        getAllDailyEvents(selected)
+    fun onDayClicked(dayOfMonth: Int, month: Int, year: Int){
+        val selectedLocaleDate = LocalDateTime.of(year, month+1, dayOfMonth, 0, 0)
+        val selectedDate = localDateTimeToDate(selectedLocaleDate)
+        val selectedDateString = formatter.format(selectedDate)
+        _selectedDate.value = selectedDate
+        _selectedDayStr.value = selectedDateString
+        getAllDailyEvents(selectedDate)
 
     }
 

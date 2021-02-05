@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.entity.EventRepo
+import com.example.android.dailyplanner.extensions.toDate
+import com.example.android.dailyplanner.extensions.toStringWithFormat
 import com.example.android.dailyplanner.interactor.Interactor
 import com.example.android.dailyplanner.repository.Repository
+import com.example.android.dailyplanner.utils.dateFormatPatternWithSlash
 
 class AddNewEventViewModel (val interactor: Interactor ): ViewModel() {
     private val _eventLiveData = MutableLiveData<Event>()
@@ -29,6 +32,11 @@ class AddNewEventViewModel (val interactor: Interactor ): ViewModel() {
             interactor.onSave(it)
         }
        _navigationToAllDailyEvents.value = true
+    }
+
+    fun load(selectedDate: Long){
+        _eventLiveData.value?.date = selectedDate.toDate().toStringWithFormat(dateFormatPatternWithSlash)
+        _eventLiveData.postValue(_eventLiveData.value)
     }
 
 

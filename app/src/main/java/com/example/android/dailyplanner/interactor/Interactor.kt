@@ -6,6 +6,9 @@ import com.example.android.dailyplanner.extensions.atStartOfDay
 import com.example.android.dailyplanner.extensions.toStringWithFormat
 import com.example.android.dailyplanner.repository.EventCallBack
 import com.example.android.dailyplanner.repository.Repository
+import com.example.android.dailyplanner.utils.dateFormatPatternWithSlash
+import com.example.android.dailyplanner.utils.timeFormat
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,9 +45,9 @@ class Interactor(val repository : Repository){
         val event = Event()
         eventRepo?.let {
             event.id = eventRepo.id
-            event.date = eventRepo.startTime.toStringWithFormat("dd/MM/yyyy")
-            event.startTime = eventRepo.startTime.toStringWithFormat("HH:mm")
-            event.endTime = eventRepo.endTime.toStringWithFormat("HH:mm")
+            event.date = eventRepo.startTime.toStringWithFormat(dateFormatPatternWithSlash)
+            event.startTime = eventRepo.startTime.toStringWithFormat(timeFormat)
+            event.endTime = eventRepo.endTime.toStringWithFormat(timeFormat)
             event.name = eventRepo.name
         }
 
@@ -52,9 +55,10 @@ class Interactor(val repository : Repository){
     }
 
     private fun getFullDate(time: String, date: String): Date {
-        val formatter = SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault())
+        val formatter = SimpleDateFormat("$dateFormatPatternWithSlash $timeFormat", Locale.getDefault())
         val dateInString = "$date $time"
-        return formatter.parse(dateInString)
+        val date = formatter.parse(dateInString)!!
+        return date
     }
 }
 

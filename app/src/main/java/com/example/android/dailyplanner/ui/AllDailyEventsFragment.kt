@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CalendarView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.applandeo.materialcalendarview.EventDay
-import com.applandeo.materialcalendarview.listeners.OnDayClickListener
 import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.databinding.AllDailyEventsFragmentBinding
 import com.example.android.dailyplanner.viewmodel.AllDailyEventsViewModel
@@ -44,17 +44,16 @@ class AllDailyEventsFragment : Fragment() {
         binding.setLifecycleOwner(this)
 
         binding.fab.setOnClickListener { view: View ->
-            view.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToAddNewEventFragment(binding.calendarContainer.firstSelectedDate.time))
-            Navigation.findNavController(view).navigate(R.id.action_allDailyEventsFragment_to_addNewEventFragment)
+            view.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToAddNewEventFragment(binding.calendarContainer.date))
+        }
+
+        binding.calendarContainer.setOnDateChangeListener{ calendarView: CalendarView, year: Int, month: Int, dayOfMonth: Int ->
+            _viewModel.onDayClicked(dayOfMonth, month, year)
         }
 
 
-        binding.calendarContainer.setOnDayClickListener(object : OnDayClickListener{
-            override fun onDayClick(eventDay: EventDay) {
-                _viewModel.onDayClicked(eventDay)
-            }
 
-        })
+
 
         val adapter = EventsAdapter(
             EventListener { eventId ->
@@ -62,6 +61,12 @@ class AllDailyEventsFragment : Fragment() {
             })
 
         binding.recyclerView.adapter = adapter
+
+        _viewModel.selectedDate.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.calendarContainer.date = it.time
+            }
+        })
 
         _viewModel.navigateToEventDetailFragment.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it?.let {

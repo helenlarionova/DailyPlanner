@@ -43,8 +43,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     //calendar_view
-    implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
-    //implementation 'com.github.shrikanth7698:Collapsible-Calendar-View-Android:v1.0.3'
+    implementation 'com.applandeo:material-calendar-view:1.7.0'
+    //implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
+    //implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:26.3.0')

@@ -16,6 +16,8 @@ fun Int.twoDigits() = if (this <= 9) "0$this" else this.toString()
 
 fun Date.toStringWithFormat(format: String) : String = SimpleDateFormat(format, Locale.getDefault()).format(this)
 
+fun Long.toDate() : Date = Date(this)
+
 
 
 fun Date.atStartOfDay() : Date?{
