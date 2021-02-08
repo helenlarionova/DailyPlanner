@@ -6,7 +6,8 @@
     <string name="start">Начало</string>
     <string name="end">Конец</string>
     <string name="description">Описание</string>
-    <string name="empty_field_warning">Поле не может быть пустым</string>
+    <string name="empty_field_warning">Поля не могут быть пустыми</string>
     <string name="new_event">Новое событие</string>
     <string name="event">Событие</string>
+    <string name="time_field_warning">Время начала не может быть больше времени окончания!</string>
 </resources>

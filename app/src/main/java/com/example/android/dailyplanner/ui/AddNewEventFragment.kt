@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.text.format.DateUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,11 +19,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.databinding.AddNewEventFragmentBinding
-import com.example.android.dailyplanner.extensions.toDate
 import com.example.android.dailyplanner.extensions.toEditable
-import com.example.android.dailyplanner.extensions.toStringWithFormat
 import com.example.android.dailyplanner.extensions.twoDigits
-import com.example.android.dailyplanner.utils.dateFormatPatternWithSlash
+import com.example.android.dailyplanner.utils.isTimeCorrect
 import com.example.android.dailyplanner.viewmodel.AddNewEventViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -69,7 +68,8 @@ class AddNewEventFragment : Fragment() {
         })
 
         _binding.fab.setOnClickListener{
-            saveEvent()
+            if (isFieldsOnEmpty() && isTimeOnCorrect())
+                _viewModel.onSave()
         }
 
         _binding.dateEditText.setOnClickListener{
@@ -86,6 +86,8 @@ class AddNewEventFragment : Fragment() {
 
         return _binding.root
     }
+
+
 
     private fun showTimePickerDialog(view: View) {
         val timePickerFragment = TimePickerFragment.newInstance(TimePickerDialog.OnTimeSetListener{_, hour, minute ->
@@ -105,14 +107,24 @@ class AddNewEventFragment : Fragment() {
         datePickerFragment.show(requireActivity().supportFragmentManager, "datePicker")
     }
 
-    private fun saveEvent() {
-        if (_viewModel.eventLiveData.value?.name.isNullOrBlank() ||
-            _viewModel.eventLiveData.value?.startTime.toString().isNullOrEmpty() ||
-            _viewModel.eventLiveData.value?.endTime.toString().isNullOrEmpty()){
+    private fun isFieldsOnEmpty():Boolean {
+        if (_binding.titleEditText.text.isNullOrBlank()||
+            _binding.dateEditText.text.isNullOrEmpty() ||
+            _binding.timeStartEditText.text.isNullOrEmpty()||
+            _binding.timeEndEditText.text.isNullOrBlank()){
             Toast.makeText(context, getString(R.string.empty_field_warning), Toast.LENGTH_SHORT).show()
-            return
+            return false
         }else{
-            _viewModel.onSave()
+            return true
+        }
+    }
+
+    private fun isTimeOnCorrect(): Boolean {
+        return if (isTimeCorrect(_binding.timeStartEditText.text.toString(), _binding.timeEndEditText.text.toString())){
+            true
+        }else{
+            Toast.makeText(context, getString(R.string.time_field_warning), Toast.LENGTH_SHORT).show()
+            false
         }
     }
 
