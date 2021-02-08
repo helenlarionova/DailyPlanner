@@ -1,6 +1,8 @@
 package com.example.android.dailyplanner.extensions
 
 import android.text.Editable
+import com.example.android.dailyplanner.utils.dateFormatPatternDetail
+import com.example.android.dailyplanner.utils.dateFormatPatternWithSlash
 import com.example.android.dailyplanner.utils.dateToLocalDateTime
 import com.example.android.dailyplanner.utils.localDateTimeToDate
 import java.text.SimpleDateFormat

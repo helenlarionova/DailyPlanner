@@ -9,6 +9,7 @@
             name="viewModel"
             type="com.example.android.dailyplanner.viewmodel.EventDetailViewModel" />
 
+        <import type="com.example.android.dailyplanner.utils.DateUtilsKt"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,6 +66,7 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="@{viewModel.eventLiveData.name}"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/titleImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/titleImageView"
@@ -99,6 +101,7 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="@{viewModel.eventLiveData.startTime + '-' + viewModel.eventLiveData.endTime}"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/timeImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/timeImageView"
@@ -113,7 +116,7 @@
             android:layout_marginTop="4dp"
             android:paddingTop="4dp"
             android:paddingBottom="8dp"
-            android:text="@{viewModel.eventLiveData.date}"
+            android:text="@{DateUtilsKt.stringToDateFormatString(viewModel.eventLiveData.date)}"
             app:layout_constraintEnd_toEndOf="@id/timeTextView"
             app:layout_constraintStart_toStartOf="@id/timeTextView"
             app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
@@ -147,6 +150,7 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="@{viewModel.eventLiveData.description}"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/descriptionImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/descriptionImageView"

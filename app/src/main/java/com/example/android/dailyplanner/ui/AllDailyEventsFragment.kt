@@ -46,6 +46,7 @@ class AllDailyEventsFragment : Fragment() {
         binding.fab.setOnClickListener { view: View ->
             view.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToAddNewEventFragment(binding.calendarContainer.date))
         }
+        
 
         binding.calendarContainer.setOnDateChangeListener{ _: CalendarView, year: Int, month: Int, dayOfMonth: Int ->
             _viewModel.onDayClicked(dayOfMonth, month, year)
