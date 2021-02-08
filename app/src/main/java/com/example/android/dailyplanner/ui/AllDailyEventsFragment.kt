@@ -41,13 +41,13 @@ class AllDailyEventsFragment : Fragment() {
 
         binding.viewModel = _viewModel
 
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
 
         binding.fab.setOnClickListener { view: View ->
             view.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToAddNewEventFragment(binding.calendarContainer.date))
         }
 
-        binding.calendarContainer.setOnDateChangeListener{ calendarView: CalendarView, year: Int, month: Int, dayOfMonth: Int ->
+        binding.calendarContainer.setOnDateChangeListener{ _: CalendarView, year: Int, month: Int, dayOfMonth: Int ->
             _viewModel.onDayClicked(dayOfMonth, month, year)
         }
 
@@ -71,6 +71,7 @@ class AllDailyEventsFragment : Fragment() {
         _viewModel.navigateToEventDetailFragment.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             it?.let {
                 this.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToEventDetailFragment(it))
+                _viewModel.doneNavigating()
             }
 
         })

@@ -6,17 +6,15 @@ import androidx.lifecycle.ViewModel
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.entity.EventRepo
 import com.example.android.dailyplanner.interactor.Interactor
-import com.example.android.dailyplanner.repository.EventCallBack
+import com.example.android.dailyplanner.repository.EventListCallBack
 import com.example.android.dailyplanner.utils.dateFormatPatternFull
 import com.example.android.dailyplanner.utils.localDateTimeToDate
 import java.lang.Exception
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.Month
 import java.util.*
 
-class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventCallBack {
+class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventListCallBack {
 
     private var _events = MutableLiveData<List<Event>>()
     val events: LiveData<List<Event>> = _events
@@ -54,6 +52,10 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventC
 
     private val _navigateToEventDetailFragment = MutableLiveData<String>()
     val navigateToEventDetailFragment:LiveData<String> = _navigateToEventDetailFragment
+
+    fun doneNavigating() {
+        _navigateToEventDetailFragment.value = null
+    }
 
     fun onEventItemClicked(id: String){
         _navigateToEventDetailFragment.value = id

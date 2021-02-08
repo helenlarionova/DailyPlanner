@@ -8,16 +8,22 @@ import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
-interface EventCallBack{
+interface EventListCallBack{
     fun onSuccess(list: List<EventRepo>)
     fun onError(exception: Exception)
 }
+
+interface EventCallBack{
+    fun onSuccess(event: EventRepo)
+    fun onError(exception: Exception)
+}
+
 class Repository (val store : FirebaseFirestore) : IRepository {
 
     private val db = store.collection(COLLECTION_EVENTS)
 
 
-    override fun getAllDailyEvents(date: Date, callback: EventCallBack) {
+    override fun getAllDailyEvents(date: Date, callback: EventListCallBack) {
 
         db.whereGreaterThanOrEqualTo("startTime", date.atStartOfDay()!!)
             .get()
@@ -38,15 +44,14 @@ class Repository (val store : FirebaseFirestore) : IRepository {
 
     }
 
-    override fun getEvent(eventId: String): EventRepo? {
-        var event: EventRepo? = EventRepo()
+    override fun getEvent(eventId: String, callback: EventCallBack) {
         db.document(eventId).get().addOnSuccessListener {document ->
             if (document.exists()){
-                event = document.toObject(EventRepo::class.java)
+                val event = document.toObject(EventRepo::class.java)
+                event?.let { callback.onSuccess(it) }
             }
 
         }
-        return event
     }
 
     override fun insertEvent(event: EventRepo) {
@@ -64,7 +69,8 @@ class Repository (val store : FirebaseFirestore) : IRepository {
 
     override fun deleteEvent(event: EventRepo) {
         val eventRef = db.document(event.id)
-        eventRef.delete()
+        eventRef.delete().addOnSuccessListener {
+        }
     }
 
     companion object {

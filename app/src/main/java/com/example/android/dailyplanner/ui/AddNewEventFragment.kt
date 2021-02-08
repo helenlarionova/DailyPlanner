@@ -56,7 +56,7 @@ class AddNewEventFragment : Fragment() {
 
         _binding.addNewEventViewModel = _viewModel
 
-        _binding.setLifecycleOwner(this)
+        _binding.lifecycleOwner = this
 
         _viewModel.navigationToAllDailyEvents.observe(viewLifecycleOwner, Observer{
             it?.let{

@@ -6,28 +6,64 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.android.dailyplanner.R
+import com.example.android.dailyplanner.databinding.EventDetailFragmentBinding
 import com.example.android.dailyplanner.viewmodel.EventDetailViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EventDetailFragment : Fragment() {
-
     companion object {
         fun newInstance() = EventDetailFragment()
     }
 
-    private val viewModel by viewModel<EventDetailViewModel> ()
+    private val _viewModel by viewModel<EventDetailViewModel> ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.event_detail_fragment, container, false)
+
+        val binding: EventDetailFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.event_detail_fragment, container, false)
+
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+        binding.toolbar.setNavigationOnClickListener{
+            it.findNavController().navigate(EventDetailFragmentDirections.actionEventDetailFragmentToAllDailyEventsFragment())
+            _viewModel.doneNavigating()
+        }
+
+        val args = EventDetailFragmentArgs.fromBundle(requireArguments())
+        val eventId = args.eventId
+        _viewModel.load(eventId)
+
+        binding.viewModel = _viewModel
+        binding.lifecycleOwner = this
+
+        binding.fab.setOnClickListener{
+            _viewModel.onDelete()
+        }
+
+        _viewModel.navigationToAllDailyEvents.observe(viewLifecycleOwner, Observer{
+            it?.let{
+                this.findNavController().navigate(R.id.action_eventDetailFragment_to_allDailyEventsFragment)
+                _viewModel.doneNavigating()
+            }
+        })
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // TODO: Use the ViewModel
     }
+
+
 
 }
