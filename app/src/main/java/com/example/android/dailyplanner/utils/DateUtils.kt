@@ -9,7 +9,7 @@ import java.util.*
 const val dateFormatPatternWithSlash = "dd/MM/yyyy"
 const val dateFormatPatternFull = "d MMMM yyyy"
 const val dateFormatPatternDetail = "EEEE, MMM d, yyyy"
-const val timeFormat = "H:mm"
+const val timeFormat = "HH:mm"
 
 fun dateToLocalDateTime(date: Date): LocalDateTime {
     return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
