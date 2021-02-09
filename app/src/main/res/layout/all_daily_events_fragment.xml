@@ -34,14 +34,19 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <CalendarView
+        <com.applandeo.materialcalendarview.CalendarView
             android:id="@+id/calendarContainer"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:datePicker="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView" />
+            app:layout_constraintBottom_toTopOf="@id/recyclerView"
+            app:headerColor="@color/primaryColor"
+            app:selectionColor="@color/primaryDarkColor"
+            app:todayLabelColor="@color/primaryDarkColor"
+            app:type="one_day_picker"/>
 
 
         <androidx.recyclerview.widget.RecyclerView

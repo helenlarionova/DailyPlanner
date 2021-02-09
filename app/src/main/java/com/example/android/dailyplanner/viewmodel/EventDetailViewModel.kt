@@ -18,9 +18,9 @@ class EventDetailViewModel (val interactor: Interactor) : ViewModel(), EventCall
     private val _eventLiveData = MutableLiveData<Event>()
     val eventLiveData: LiveData<Event> = _eventLiveData
 
-//    init {
-//        _eventLiveData.value = Event()
-//    }
+    init {
+        _eventLiveData.value = Event()
+    }
 
     private val _navigationToAllDailyEvents = MutableLiveData<Boolean>()
     var navigationToAllDailyEvents: LiveData<Boolean> = _navigationToAllDailyEvents
@@ -38,7 +38,6 @@ class EventDetailViewModel (val interactor: Interactor) : ViewModel(), EventCall
 
     fun load(eventId: String){
         interactor.getEventById(eventId, this)
-
     }
 
     override fun onSuccess(event: EventRepo) {

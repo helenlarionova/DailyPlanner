@@ -42,9 +42,7 @@ class EventsAdapter (val clickListener: EventListener) : ListAdapter<Event, Even
                 )
             }
         }
-
     }
-
 }
 
 class EventDiffCallback:

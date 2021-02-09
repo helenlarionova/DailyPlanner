@@ -38,23 +38,21 @@ class AllDailyEventsFragment : Fragment() {
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
-
         binding.viewModel = _viewModel
 
         binding.lifecycleOwner = this
 
         binding.fab.setOnClickListener { view: View ->
-            view.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToAddNewEventFragment(binding.calendarContainer.date))
-        }
-        
-
-        binding.calendarContainer.setOnDateChangeListener{ _: CalendarView, year: Int, month: Int, dayOfMonth: Int ->
-            _viewModel.onDayClicked(dayOfMonth, month, year)
+            view.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToAddNewEventFragment(binding.calendarContainer.firstSelectedDate.time))
         }
 
+        binding.calendarContainer.setOnDayClickListener{
+            _viewModel.onDayClicked(it)
+        }
 
-
-
+//        binding.calendarContainer.setOnDateChangeListener{ _: CalendarView, year: Int, month: Int, dayOfMonth: Int ->
+//            _viewModel.onDayClicked(dayOfMonth, month, year)
+//        }
 
         val adapter = EventsAdapter(
             EventListener { eventId ->
@@ -65,7 +63,7 @@ class AllDailyEventsFragment : Fragment() {
 
         _viewModel.selectedDate.observe(viewLifecycleOwner, Observer {
             it?.let {
-                binding.calendarContainer.date = it.time
+                binding.calendarContainer.setDate(it)
             }
         })
 
@@ -74,7 +72,6 @@ class AllDailyEventsFragment : Fragment() {
                 this.findNavController().navigate(AllDailyEventsFragmentDirections.actionAllDailyEventsFragmentToEventDetailFragment(it))
                 _viewModel.doneNavigating()
             }
-
         })
 
         _viewModel.events.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
@@ -83,9 +80,6 @@ class AllDailyEventsFragment : Fragment() {
 
             }
         })
-
-
-
 
         return binding.root
     }

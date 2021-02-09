@@ -34,7 +34,7 @@
             app:popUpTo="@id/allDailyEventsFragment" />
         <argument
             android:name="selectedDate"
-            app:argType="long" />
+            app:argType="java.util.Date" />
     </fragment>
     <fragment
         android:id="@+id/eventDetailFragment"

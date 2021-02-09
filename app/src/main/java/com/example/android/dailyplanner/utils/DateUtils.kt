@@ -29,8 +29,12 @@ fun isTimeCorrect(startTime: String, endTime: String) : Boolean{
 fun stringToDateFormatString(str: String?): String {
     val formatter = SimpleDateFormat(dateFormatPatternWithSlash, Locale.getDefault())
     str?.let {
-        val dateFromString = formatter.parse(str)
-        return dateFromString.toStringWithFormat(dateFormatPatternDetail)
+        try {
+            val dateFromString = formatter.parse(str)
+            return dateFromString.toStringWithFormat(dateFormatPatternDetail)
+        }catch (e: Exception){
+
+        }
     }
     return str.toString()
 }

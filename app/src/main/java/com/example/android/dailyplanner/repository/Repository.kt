@@ -22,9 +22,7 @@ class Repository (val store : FirebaseFirestore) : IRepository {
 
     private val db = store.collection(COLLECTION_EVENTS)
 
-
     override fun getAllDailyEvents(date: Date, callback: EventListCallBack) {
-
         db.whereGreaterThanOrEqualTo("startTime", date.atStartOfDay()!!)
             .get()
             .addOnSuccessListener{ task ->
@@ -37,11 +35,9 @@ class Repository (val store : FirebaseFirestore) : IRepository {
                 }
                 callback.onSuccess(eventList)
             }
-
             .addOnFailureListener { exception ->
                 callback.onError(exception)
             }
-
     }
 
     override fun getEvent(eventId: String, callback: EventCallBack) {
@@ -50,7 +46,6 @@ class Repository (val store : FirebaseFirestore) : IRepository {
                 val event = document.toObject(EventRepo::class.java)
                 event?.let { callback.onSuccess(it) }
             }
-
         }
     }
 
@@ -64,7 +59,6 @@ class Repository (val store : FirebaseFirestore) : IRepository {
     override fun updateEvent(event: EventRepo) {
         val eventRef = db.document(event.id)
         eventRef.set(event)
-
     }
 
     override fun deleteEvent(event: EventRepo) {

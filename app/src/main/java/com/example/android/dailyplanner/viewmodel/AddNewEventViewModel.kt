@@ -10,8 +10,10 @@ import com.example.android.dailyplanner.extensions.toStringWithFormat
 import com.example.android.dailyplanner.interactor.Interactor
 import com.example.android.dailyplanner.repository.Repository
 import com.example.android.dailyplanner.utils.dateFormatPatternWithSlash
+import java.util.*
 
 class AddNewEventViewModel (val interactor: Interactor ): ViewModel() {
+
     private val _eventLiveData = MutableLiveData<Event>()
     val eventLiveData: LiveData<Event> = _eventLiveData
 
@@ -26,7 +28,6 @@ class AddNewEventViewModel (val interactor: Interactor ): ViewModel() {
         _navigationToAllDailyEvents.value = null
     }
 
-
     fun onSave(){
         _eventLiveData.value?.let {
             interactor.onSave(it)
@@ -34,11 +35,9 @@ class AddNewEventViewModel (val interactor: Interactor ): ViewModel() {
        _navigationToAllDailyEvents.value = true
     }
 
-    fun load(selectedDate: Long){
-        _eventLiveData.value?.date = selectedDate.toDate().toStringWithFormat(dateFormatPatternWithSlash)
+    fun load(selectedDate: Date){
+        _eventLiveData.value?.date = selectedDate.toStringWithFormat(dateFormatPatternWithSlash)
         _eventLiveData.postValue(_eventLiveData.value)
     }
-
-
 
 }

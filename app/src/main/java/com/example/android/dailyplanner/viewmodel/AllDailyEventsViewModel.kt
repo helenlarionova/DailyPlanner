@@ -3,6 +3,7 @@ package com.example.android.dailyplanner.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.applandeo.materialcalendarview.EventDay
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.entity.EventRepo
 import com.example.android.dailyplanner.interactor.Interactor
@@ -33,11 +34,18 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventL
         _selectedDate.postValue(currentDate)
         _selectedDayStr.postValue(currentDateString)
         getAllDailyEvents(currentDate)
-
     }
 
     private fun getAllDailyEvents(date: Date){
             interactor.getAllDailyEvents(date, this)
+    }
+
+    fun onDayClicked(day : EventDay){
+        val selectedDate = day.calendar.time
+        val selectedDateString = formatter.format(selectedDate)
+        _selectedDate.value = selectedDate
+        _selectedDayStr.value = selectedDateString
+        getAllDailyEvents(selectedDate)
     }
 
     fun onDayClicked(dayOfMonth: Int, month: Int, year: Int){
@@ -47,7 +55,6 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventL
         _selectedDate.value = selectedDate
         _selectedDayStr.value = selectedDateString
         getAllDailyEvents(selectedDate)
-
     }
 
     private val _navigateToEventDetailFragment = MutableLiveData<String>()
@@ -68,6 +75,5 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventL
     override fun onError(exception: Exception) {
         TODO("Not yet implemented")
     }
-
 
 }

@@ -17,6 +17,7 @@ import com.example.android.dailyplanner.viewmodel.EventDetailViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class EventDetailFragment : Fragment() {
+
     companion object {
         fun newInstance() = EventDetailFragment()
     }
@@ -26,7 +27,7 @@ class EventDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding: EventDetailFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.event_detail_fragment, container, false)
 

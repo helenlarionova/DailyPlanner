@@ -11,5 +11,4 @@ data class EventRepo(
     var description:String = "",
     var startTime: Date = Date(),
     var endTime: Date = Date(),
-) {
-}
+)

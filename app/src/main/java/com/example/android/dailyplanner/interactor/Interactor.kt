@@ -33,7 +33,6 @@ class Interactor(val repository : Repository){
         repository.deleteEvent(convertToEventRepo(event))
     }
 
-
     private fun convertToEventRepo(event: Event): EventRepo {
         val eventRepo = EventRepo()
         eventRepo.id = event.id
@@ -42,8 +41,6 @@ class Interactor(val repository : Repository){
         eventRepo.startTime = getFullDate(event.startTime, event.date)
         eventRepo.endTime = getFullDate(event.endTime, event.date)
         return eventRepo
-
-
     }
 
     private fun convertToEvent(eventRepo: EventRepo?): Event{
@@ -56,7 +53,6 @@ class Interactor(val repository : Repository){
             event.name = eventRepo.name
             event.description = eventRepo.description
         }
-
         return event
     }
 

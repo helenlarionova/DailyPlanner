@@ -41,8 +41,8 @@ class AddNewEventFragment : Fragment() {
         _binding = DataBindingUtil.inflate(inflater, R.layout.add_new_event_fragment, container, false)
 
         (activity as AppCompatActivity).setSupportActionBar(_binding.toolbar)
-        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true);
-        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true);
+        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
         _binding.toolbar.setNavigationOnClickListener{
             it.findNavController().navigate(AddNewEventFragmentDirections.actionAddNewEventFragmentToAllDailyEventsFragment())
             _viewModel.doneNavigating()
@@ -86,8 +86,6 @@ class AddNewEventFragment : Fragment() {
 
         return _binding.root
     }
-
-
 
     private fun showTimePickerDialog(view: View) {
         val timePickerFragment = TimePickerFragment.newInstance(TimePickerDialog.OnTimeSetListener{_, hour, minute ->

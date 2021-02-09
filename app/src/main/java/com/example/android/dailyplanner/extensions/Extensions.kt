@@ -20,15 +20,13 @@ fun Date.toStringWithFormat(format: String) : String = SimpleDateFormat(format, 
 
 fun Long.toDate() : Date = Date(this)
 
-
-
-fun Date.atStartOfDay() : Date?{
+fun Date.atStartOfDay() : Date{
         val localDateTime: LocalDateTime = dateToLocalDateTime(this)
         val startOfDay: LocalDateTime = localDateTime.with(LocalTime.MIN)
         return localDateTimeToDate(startOfDay)
     }
 
-fun Date.atEndOfDay() : Date? {
+fun Date.atEndOfDay() : Date {
     val localDateTime: LocalDateTime = dateToLocalDateTime(this)
     val endOfDay: LocalDateTime = localDateTime.with(LocalTime.MAX)
     return localDateTimeToDate(endOfDay)
