@@ -1,5 +1,6 @@
 package com.example.android.dailyplanner.utils
 
+import android.util.Log
 import com.example.android.dailyplanner.extensions.toStringWithFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -33,7 +34,7 @@ fun stringToDateFormatString(str: String?): String {
             val dateFromString = formatter.parse(str)
             return dateFromString.toStringWithFormat(dateFormatPatternDetail)
         }catch (e: Exception){
-
+            Log.e("Date Convert", e.printStackTrace().toString())
         }
     }
     return str.toString()

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.text.format.DateUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +20,9 @@ import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.databinding.AddNewEventFragmentBinding
 import com.example.android.dailyplanner.extensions.toEditable
 import com.example.android.dailyplanner.extensions.twoDigits
-import com.example.android.dailyplanner.utils.isTimeCorrect
 import com.example.android.dailyplanner.viewmodel.AddNewEventViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class AddNewEventFragment : Fragment() {
 
@@ -40,17 +39,16 @@ class AddNewEventFragment : Fragment() {
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, R.layout.add_new_event_fragment, container, false)
 
-        (activity as AppCompatActivity).setSupportActionBar(_binding.toolbar)
-        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+        setupToolbar()
+
         _binding.toolbar.setNavigationOnClickListener{
             it.findNavController().navigate(AddNewEventFragmentDirections.actionAddNewEventFragmentToAllDailyEventsFragment())
             _viewModel.doneNavigating()
             hideKeyboard()
         }
 
-        val args = AddNewEventFragmentArgs.fromBundle(requireArguments())
-        val selectedDate = args.selectedDate
+        val selectedDate = getSelectedDateFromArgs()
+
         _viewModel.load(selectedDate)
 
         _binding.addNewEventViewModel = _viewModel
@@ -62,14 +60,11 @@ class AddNewEventFragment : Fragment() {
                 this.findNavController().navigate(R.id.action_addNewEventFragment_to_allDailyEventsFragment)
                 _viewModel.doneNavigating()
                 hideKeyboard()
-
-
             }
         })
 
         _binding.fab.setOnClickListener{
-            if (isFieldsOnEmpty() && isTimeOnCorrect())
-                _viewModel.onSave()
+            _viewModel.checkFields()
         }
 
         _binding.dateEditText.setOnClickListener{
@@ -84,7 +79,30 @@ class AddNewEventFragment : Fragment() {
             showTimePickerDialog(it)
         }
 
+        _viewModel.showWarning.observe(viewLifecycleOwner, {
+            it?.let {
+                if (it==-1) //ошибок нет
+                {
+                    _viewModel.onSave()
+                } else{
+                    showWarningToast(it)
+                    _viewModel.doneShowWarning()
+                }
+            }
+        })
+
         return _binding.root
+    }
+
+    private fun getSelectedDateFromArgs(): Date {
+        val args = AddNewEventFragmentArgs.fromBundle(requireArguments())
+        return args.selectedDate
+    }
+
+    private fun setupToolbar() {
+        (activity as AppCompatActivity).setSupportActionBar(_binding.toolbar)
+        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
     }
 
     private fun showTimePickerDialog(view: View) {
@@ -105,25 +123,8 @@ class AddNewEventFragment : Fragment() {
         datePickerFragment.show(requireActivity().supportFragmentManager, "datePicker")
     }
 
-    private fun isFieldsOnEmpty():Boolean {
-        if (_binding.titleEditText.text.isNullOrBlank()||
-            _binding.dateEditText.text.isNullOrEmpty() ||
-            _binding.timeStartEditText.text.isNullOrEmpty()||
-            _binding.timeEndEditText.text.isNullOrBlank()){
-            Toast.makeText(context, getString(R.string.empty_field_warning), Toast.LENGTH_SHORT).show()
-            return false
-        }else{
-            return true
-        }
-    }
-
-    private fun isTimeOnCorrect(): Boolean {
-        return if (isTimeCorrect(_binding.timeStartEditText.text.toString(), _binding.timeEndEditText.text.toString())){
-            true
-        }else{
-            Toast.makeText(context, getString(R.string.time_field_warning), Toast.LENGTH_SHORT).show()
-            false
-        }
+    private fun showWarningToast(resourceId: Int) {
+        Toast.makeText(context, getString(resourceId), Toast.LENGTH_SHORT).show()
     }
 
     fun hideKeyboard() {

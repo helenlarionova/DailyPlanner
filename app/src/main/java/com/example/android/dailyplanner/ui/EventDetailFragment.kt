@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -50,11 +53,16 @@ class EventDetailFragment : Fragment() {
             _viewModel.onDelete()
         }
 
-        _viewModel.navigationToAllDailyEvents.observe(viewLifecycleOwner, Observer{
+        _viewModel.navigationToAllDailyEvents.observe(viewLifecycleOwner, {
             it?.let{
                 this.findNavController().navigate(R.id.action_eventDetailFragment_to_allDailyEventsFragment)
                 _viewModel.doneNavigating()
             }
+        })
+
+        _viewModel.showError.observe(viewLifecycleOwner, {
+            showErrorToast()
+            _viewModel.doneShowErrorToast()
         })
 
         return binding.root
@@ -64,6 +72,8 @@ class EventDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
     }
 
-
+    private fun showErrorToast() {
+        Toast.makeText(context, R.string.database_error_message, Toast.LENGTH_SHORT).show()
+    }
 
 }

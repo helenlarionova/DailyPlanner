@@ -18,11 +18,8 @@ class DatePickerFragment : DialogFragment(){
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        // Create a new instance of DatePickerDialog and return it
         return DatePickerDialog(requireActivity(), listener, year, month, day)
     }
-
-
 
     companion object {
         fun newInstance(listener: DatePickerDialog.OnDateSetListener): DatePickerFragment {
@@ -34,7 +31,6 @@ class DatePickerFragment : DialogFragment(){
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
     }
 
 }

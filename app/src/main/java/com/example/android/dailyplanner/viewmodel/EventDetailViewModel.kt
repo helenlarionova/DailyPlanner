@@ -13,7 +13,7 @@ import com.example.android.dailyplanner.repository.Repository
 import com.example.android.dailyplanner.utils.dateFormatPatternWithSlash
 import java.lang.Exception
 
-class EventDetailViewModel (val interactor: Interactor) : ViewModel(), EventCallBack {
+class EventDetailViewModel (val interactor: Interactor) : ViewModel(){
 
     private val _eventLiveData = MutableLiveData<Event>()
     val eventLiveData: LiveData<Event> = _eventLiveData
@@ -36,17 +36,27 @@ class EventDetailViewModel (val interactor: Interactor) : ViewModel(), EventCall
         _navigationToAllDailyEvents.value = true
     }
 
+    private var _showError = MutableLiveData<Boolean>()
+    val showError: LiveData<Boolean> = _showError
+
+    fun doneShowErrorToast(){
+        _showError.value = null
+    }
+
+
     fun load(eventId: String){
-        interactor.getEventById(eventId, this)
+        interactor.getEventById(eventId, object : EventCallBack{
+            override fun onSuccess(event: EventRepo) {
+                _eventLiveData.postValue(interactor.getEvent(event))
+            }
+
+            override fun onError(exception: Exception) {
+                _showError.value = true
+            }
+        })
     }
 
-    override fun onSuccess(event: EventRepo) {
-        _eventLiveData.postValue(interactor.getEvent(event))
-    }
 
-    override fun onError(exception: Exception) {
-        TODO("Not yet implemented")
-    }
 
 
 }

@@ -10,6 +10,7 @@ import kotlin.collections.ArrayList
 
 interface EventListCallBack{
     fun onSuccess(list: List<EventRepo>)
+    fun onLoading()
     fun onError(exception: Exception)
 }
 
@@ -26,6 +27,7 @@ class Repository (val store : FirebaseFirestore) : IRepository {
         db.whereGreaterThanOrEqualTo("startTime", date.atStartOfDay()!!)
             .get()
             .addOnSuccessListener{ task ->
+                callback.onLoading()
                 val eventList = ArrayList<EventRepo>()
                 task.documents.forEach {
                     val event = it.toObject(EventRepo::class.java)!!

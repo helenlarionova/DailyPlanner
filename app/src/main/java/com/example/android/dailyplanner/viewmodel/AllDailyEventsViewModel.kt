@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
-class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventListCallBack {
+class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel() {
 
     private var _events = MutableLiveData<List<Event>>()
     val events: LiveData<List<Event>> = _events
@@ -26,9 +26,14 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventL
     private var _selectedDate = MutableLiveData<Date>()
     val selectedDate: LiveData<Date> = _selectedDate
 
+    private var _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData <Boolean> = _isLoading
+
+
     val formatter = SimpleDateFormat(dateFormatPatternFull, Locale.getDefault())
 
     init {
+        _isLoading.value = true
         val currentDate = Calendar.getInstance().time
         val currentDateString = formatter.format(currentDate)
         _selectedDate.postValue(currentDate)
@@ -36,8 +41,30 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventL
         getAllDailyEvents(currentDate)
     }
 
+    private var _showError = MutableLiveData<Boolean>()
+    val showError: LiveData<Boolean> = _showError
+
+    fun doneShowErrorToast(){
+        _showError.value = null
+    }
+
     private fun getAllDailyEvents(date: Date){
-            interactor.getAllDailyEvents(date, this)
+            interactor.getAllDailyEvents(date, object :EventListCallBack{
+                override fun onSuccess(list: List<EventRepo>) {
+                    _events.postValue(interactor.getListEvent(list))
+                    _isLoading.value = false
+                }
+
+                override fun onLoading() {
+                    _isLoading.value = true
+                }
+
+                override fun onError(exception: Exception) {
+                    _showError.value = true
+                    _isLoading.value = false
+                }
+
+            })
     }
 
     fun onDayClicked(day : EventDay){
@@ -66,14 +93,6 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel(), EventL
 
     fun onEventItemClicked(id: String){
         _navigateToEventDetailFragment.value = id
-    }
-
-    override fun onSuccess(list: List<EventRepo>) {
-        _events.postValue(interactor.getListEvent(list))
-    }
-
-    override fun onError(exception: Exception) {
-        TODO("Not yet implemented")
     }
 
 }
