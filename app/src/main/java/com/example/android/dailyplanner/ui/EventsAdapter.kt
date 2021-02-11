@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.dailyplanner.databinding.EventItemViewBinding
 import com.example.android.dailyplanner.entity.Event
 
-class EventsAdapter (val clickListener: EventListener) : ListAdapter<Event, EventsAdapter.ViewHolder>(
-    EventDiffCallback()
-){
+class EventsAdapter (val clickListener: EventListener) :
+    RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
+    var events = ArrayList<Event>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(
             parent
@@ -19,11 +23,11 @@ class EventsAdapter (val clickListener: EventListener) : ListAdapter<Event, Even
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val eventItem = getItem(position)
+        val eventItem = events[position]
         holder.bind(clickListener, eventItem)
     }
 
-    class ViewHolder private constructor(val binding: EventItemViewBinding ) :
+    class ViewHolder private constructor(val binding: EventItemViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(clickListener: EventListener, item: Event) {
@@ -43,16 +47,9 @@ class EventsAdapter (val clickListener: EventListener) : ListAdapter<Event, Even
             }
         }
     }
-}
 
-class EventDiffCallback:
-    DiffUtil.ItemCallback<Event>() {
-    override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
-        return oldItem == newItem
+    override fun getItemCount(): Int {
+        return events.size
     }
 }
 

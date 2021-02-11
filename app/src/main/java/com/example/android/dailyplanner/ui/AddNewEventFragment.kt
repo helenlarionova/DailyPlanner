@@ -86,6 +86,7 @@ class AddNewEventFragment : Fragment() {
                     _viewModel.onSave()
                 } else{
                     showWarningToast(it)
+                    hideKeyboard()
                     _viewModel.doneShowWarning()
                 }
             }

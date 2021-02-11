@@ -51,8 +51,8 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel() {
     private fun getAllDailyEvents(date: Date){
             interactor.getAllDailyEvents(date, object :EventListCallBack{
                 override fun onSuccess(list: List<EventRepo>) {
-                    _events.postValue(interactor.getListEvent(list))
                     _isLoading.value = false
+                    _events.value = interactor.getListEvent(list)
                 }
 
                 override fun onLoading() {
@@ -72,15 +72,7 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel() {
         val selectedDateString = formatter.format(selectedDate)
         _selectedDate.value = selectedDate
         _selectedDayStr.value = selectedDateString
-        getAllDailyEvents(selectedDate)
-    }
-
-    fun onDayClicked(dayOfMonth: Int, month: Int, year: Int){
-        val selectedLocaleDate = LocalDateTime.of(year, month+1, dayOfMonth, 0, 0)
-        val selectedDate = localDateTimeToDate(selectedLocaleDate)
-        val selectedDateString = formatter.format(selectedDate)
-        _selectedDate.value = selectedDate
-        _selectedDayStr.value = selectedDateString
+        _isLoading.value = true
         getAllDailyEvents(selectedDate)
     }
 

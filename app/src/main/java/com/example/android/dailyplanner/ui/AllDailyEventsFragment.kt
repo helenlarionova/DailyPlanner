@@ -78,7 +78,7 @@ class AllDailyEventsFragment : Fragment() {
 
         _viewModel.events.observe(viewLifecycleOwner, {
             it?.let {
-                adapter.submitList(it)
+                adapter.events = ArrayList(it)
             }
         })
 
@@ -90,8 +90,8 @@ class AllDailyEventsFragment : Fragment() {
         _viewModel.isLoading.observe(viewLifecycleOwner, {
             it?.let {
                 if (it) {
-                    binding.progressBar.visibility = View.VISIBLE
                     binding.recyclerView.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
                 } else {
                     binding.progressBar.visibility = View.GONE
                     binding.recyclerView.visibility = View.VISIBLE
