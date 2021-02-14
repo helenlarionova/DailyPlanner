@@ -55,21 +55,25 @@ class AddNewEventViewModel (val interactor: Interactor ): ViewModel() {
             }else if (!checkTimeOnCorrect(it)){
                 _showWarning.value = R.string.time_field_warning
             }else{
-                _showWarning.value = -1
+                _showWarning.value = NOT_ERROR
             }
         }
     }
 
     private fun checkFieldsOnEmpty(event: Event) : Boolean{
         return !(event.name.isEmpty() ||
-                event.date.isEmpty()||
-                event.startTime.isEmpty()||
-                event.endTime.isEmpty()||
+                event.date.isEmpty() ||
+                event.startTime.isEmpty() ||
+                event.endTime.isEmpty() ||
                 event.description.isEmpty())
     }
 
-    private fun checkTimeOnCorrect(event: Event) : Boolean{
+    private fun checkTimeOnCorrect(event: Event): Boolean {
         return isTimeCorrect(event.startTime, event.endTime)
+    }
+
+    companion object {
+        const val NOT_ERROR = -1
     }
 
 }
