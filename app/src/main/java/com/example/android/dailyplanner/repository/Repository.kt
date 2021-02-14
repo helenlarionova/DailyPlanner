@@ -55,11 +55,6 @@ class Repository(store: FirebaseFirestore) : IRepository {
         docRef.set(event)
     }
 
-    override fun updateEvent(event: EventRepo) {
-        val eventRef = db.document(event.id)
-        eventRef.set(event)
-    }
-
     override fun deleteEvent(event: EventRepo) {
         val eventRef = db.document(event.id)
         eventRef.delete().addOnSuccessListener {

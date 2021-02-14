@@ -9,6 +9,5 @@ interface IRepository {
     fun getAllDailyEvents(date: Date, callback: EventListCallBack)
     fun getEvent(eventId: String, callback: EventCallBack)
     fun insertEvent(event: EventRepo)
-    fun updateEvent(event: EventRepo)
     fun deleteEvent(event: EventRepo)
 }
