@@ -5,13 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.entity.EventRepo
-import com.example.android.dailyplanner.extensions.toDate
-import com.example.android.dailyplanner.extensions.toStringWithFormat
 import com.example.android.dailyplanner.interactor.Interactor
 import com.example.android.dailyplanner.repository.EventCallBack
-import com.example.android.dailyplanner.repository.Repository
-import com.example.android.dailyplanner.utils.dateFormatPatternWithSlash
-import java.lang.Exception
 
 class EventDetailViewModel (val interactor: Interactor) : ViewModel(){
 
@@ -65,8 +60,5 @@ class EventDetailViewModel (val interactor: Interactor) : ViewModel(){
             }
         })
     }
-
-
-
 
 }

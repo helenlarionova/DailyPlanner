@@ -4,30 +4,17 @@ import com.example.android.dailyplanner.entity.EventRepo
 import com.example.android.dailyplanner.extensions.atEndOfDay
 import com.example.android.dailyplanner.extensions.atStartOfDay
 import com.google.firebase.firestore.FirebaseFirestore
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
-interface EventListCallBack{
-    fun onSuccess(list: List<EventRepo>)
-    fun onLoading()
-    fun onError(exception: Exception)
-}
-
-interface EventCallBack{
-    fun onSuccess(event: EventRepo)
-    fun onLoading()
-    fun onError(exception: Exception)
-}
-
-class Repository (val store : FirebaseFirestore) : IRepository {
+class Repository(store: FirebaseFirestore) : IRepository {
 
     private val db = store.collection(COLLECTION_EVENTS)
 
     override fun getAllDailyEvents(date: Date, callback: EventListCallBack) {
         db.whereGreaterThanOrEqualTo("dateStart", date.atStartOfDay())
             .get()
-            .addOnSuccessListener{ task ->
+            .addOnSuccessListener { task ->
                 callback.onLoading()
                 val eventList = ArrayList<EventRepo>()
                 task.documents.forEach {
@@ -78,6 +65,19 @@ class Repository (val store : FirebaseFirestore) : IRepository {
     }
 
     companion object {
-        const  val  COLLECTION_EVENTS  =  "events"
+        const val COLLECTION_EVENTS = "events"
     }
+}
+
+
+interface EventListCallBack {
+    fun onSuccess(list: List<EventRepo>)
+    fun onLoading()
+    fun onError(exception: Exception)
+}
+
+interface EventCallBack {
+    fun onSuccess(event: EventRepo)
+    fun onLoading()
+    fun onError(exception: Exception)
 }

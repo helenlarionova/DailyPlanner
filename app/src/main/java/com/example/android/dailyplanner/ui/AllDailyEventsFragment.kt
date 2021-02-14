@@ -10,8 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView.ItemAnimator
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.android.dailyplanner.R
 import com.example.android.dailyplanner.databinding.AllDailyEventsFragmentBinding
 import com.example.android.dailyplanner.viewmodel.AllDailyEventsViewModel
@@ -20,16 +18,12 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class AllDailyEventsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = AllDailyEventsFragment()
-    }
-
     private val _viewModel by viewModel<AllDailyEventsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding: AllDailyEventsFragmentBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.all_daily_events_fragment,

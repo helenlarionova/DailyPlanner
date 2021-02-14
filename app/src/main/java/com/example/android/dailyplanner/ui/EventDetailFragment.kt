@@ -2,16 +2,13 @@ package com.example.android.dailyplanner.ui
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.android.dailyplanner.R
@@ -21,10 +18,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class EventDetailFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = EventDetailFragment()
-    }
-
     private val _viewModel by viewModel<EventDetailViewModel> ()
 
     override fun onCreateView(
@@ -32,13 +25,15 @@ class EventDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val binding: EventDetailFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.event_detail_fragment, container, false)
+        val binding: EventDetailFragmentBinding =
+            DataBindingUtil.inflate(inflater, R.layout.event_detail_fragment, container, false)
 
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).getSupportActionBar()?.setDisplayShowHomeEnabled(true)
-        binding.toolbar.setNavigationOnClickListener{
-            it.findNavController().navigate(EventDetailFragmentDirections.actionEventDetailFragmentToAllDailyEventsFragment())
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        binding.toolbar.setNavigationOnClickListener {
+            it.findNavController()
+                .navigate(EventDetailFragmentDirections.actionEventDetailFragmentToAllDailyEventsFragment())
             _viewModel.doneNavigating()
         }
 
@@ -79,10 +74,6 @@ class EventDetailFragment : Fragment() {
         })
 
         return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     private fun showErrorToast() {
