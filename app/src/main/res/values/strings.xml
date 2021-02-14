@@ -11,4 +11,5 @@
     <string name="event">Событие</string>
     <string name="time_field_warning">Время начала не может быть больше времени окончания!</string>
     <string name="database_error_message">Не удалось загрузить данные</string>
+    <string name="no_events">Событий нет</string>
 </resources>

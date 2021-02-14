@@ -39,3 +39,9 @@ fun stringToDateFormatString(str: String?): String {
     }
     return str.toString()
 }
+
+fun getFullDate(time: String, date: String): Date {
+    val formatter = SimpleDateFormat("$dateFormatPatternWithSlash $timeFormat", Locale.getDefault())
+    val dateInString = "$date $time"
+    return formatter.parse(dateInString)!!
+}

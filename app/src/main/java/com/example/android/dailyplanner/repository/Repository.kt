@@ -16,6 +16,7 @@ interface EventListCallBack{
 
 interface EventCallBack{
     fun onSuccess(event: EventRepo)
+    fun onLoading()
     fun onError(exception: Exception)
 }
 
@@ -24,14 +25,14 @@ class Repository (val store : FirebaseFirestore) : IRepository {
     private val db = store.collection(COLLECTION_EVENTS)
 
     override fun getAllDailyEvents(date: Date, callback: EventListCallBack) {
-        db.whereGreaterThanOrEqualTo("startTime", date.atStartOfDay()!!)
+        db.whereGreaterThanOrEqualTo("dateStart", date.atStartOfDay())
             .get()
             .addOnSuccessListener{ task ->
                 callback.onLoading()
                 val eventList = ArrayList<EventRepo>()
                 task.documents.forEach {
                     val event = it.toObject(EventRepo::class.java)!!
-                    if (event.endTime <= date.atEndOfDay()) {
+                    if (event.dateFinish <= date.atEndOfDay()) {
                         eventList.add(event)
                     }
                 }
@@ -43,12 +44,19 @@ class Repository (val store : FirebaseFirestore) : IRepository {
     }
 
     override fun getEvent(eventId: String, callback: EventCallBack) {
-        db.document(eventId).get().addOnSuccessListener {document ->
-            if (document.exists()){
-                val event = document.toObject(EventRepo::class.java)
-                event?.let { callback.onSuccess(it) }
+        db.document(eventId)
+            .get()
+            .addOnSuccessListener {document ->
+                if (document.exists()){
+                    callback.onLoading()
+                    val event = document.toObject(EventRepo::class.java)
+                    event?.let { callback.onSuccess(it)
+                    }
+                }
             }
-        }
+            .addOnFailureListener { exception ->
+                callback.onError(exception)
+            }
     }
 
     override fun insertEvent(event: EventRepo) {

@@ -65,6 +65,19 @@ class EventDetailFragment : Fragment() {
             _viewModel.doneShowErrorToast()
         })
 
+        _viewModel.isLoading.observe(viewLifecycleOwner, {
+            it?.let {
+                if (it) {
+                    binding.container.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                } else {
+                    binding.progressBar.visibility = View.GONE
+                    binding.container.visibility = View.VISIBLE
+                }
+            }
+
+        })
+
         return binding.root
     }
 

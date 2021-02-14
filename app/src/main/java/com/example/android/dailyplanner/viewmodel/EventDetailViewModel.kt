@@ -18,7 +18,11 @@ class EventDetailViewModel (val interactor: Interactor) : ViewModel(){
     private val _eventLiveData = MutableLiveData<Event>()
     val eventLiveData: LiveData<Event> = _eventLiveData
 
+    private var _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData <Boolean> = _isLoading
+
     init {
+        _isLoading.value = true
         _eventLiveData.value = Event()
     }
 
@@ -47,10 +51,16 @@ class EventDetailViewModel (val interactor: Interactor) : ViewModel(){
     fun load(eventId: String){
         interactor.getEventById(eventId, object : EventCallBack{
             override fun onSuccess(event: EventRepo) {
+                _isLoading.value = false
                 _eventLiveData.postValue(interactor.getEvent(event))
             }
 
+            override fun onLoading() {
+                _isLoading.value = true
+            }
+
             override fun onError(exception: Exception) {
+                _isLoading.value = false
                 _showError.value = true
             }
         })

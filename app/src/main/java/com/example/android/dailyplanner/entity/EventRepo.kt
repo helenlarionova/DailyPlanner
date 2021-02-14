@@ -9,6 +9,6 @@ data class EventRepo(
     var id: String = "",
     var name:String = "",
     var description:String = "",
-    var startTime: Date = Date(),
-    var endTime: Date = Date(),
+    var dateStart: Date = Date(),
+    var dateFinish: Date = Date(),
 )

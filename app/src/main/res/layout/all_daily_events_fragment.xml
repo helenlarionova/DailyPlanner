@@ -42,18 +42,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView"
+            app:layout_constraintBottom_toTopOf="@id/frame_layout"
             app:headerColor="@color/primaryColor"
             app:selectionColor="@color/primaryDarkColor"
             app:todayLabelColor="@color/primaryDarkColor"
             app:type="one_day_picker"/>
 
         <FrameLayout
+            android:id="@+id/frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/calendarContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/emptyEvents_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/no_events"
+                android:gravity="center"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"
