@@ -1,5 +1,7 @@
 package com.example.android.dailyplanner.repository
 
+import com.example.android.dailyplanner.EventCallBack
+import com.example.android.dailyplanner.EventListCallBack
 import com.example.android.dailyplanner.entity.EventRepo
 import com.example.android.dailyplanner.extensions.atEndOfDay
 import com.example.android.dailyplanner.extensions.atStartOfDay
@@ -67,17 +69,4 @@ class Repository(store: FirebaseFirestore) : IRepository {
     companion object {
         const val COLLECTION_EVENTS = "events"
     }
-}
-
-
-interface EventListCallBack {
-    fun onSuccess(list: List<EventRepo>)
-    fun onLoading()
-    fun onError(exception: Exception)
-}
-
-interface EventCallBack {
-    fun onSuccess(event: EventRepo)
-    fun onLoading()
-    fun onError(exception: Exception)
 }
