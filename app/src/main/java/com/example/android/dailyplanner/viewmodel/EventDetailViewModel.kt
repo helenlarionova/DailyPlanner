@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.entity.EventRepo
 import com.example.android.dailyplanner.interactor.Interactor
-import com.example.android.dailyplanner.repository.EventCallBack
+import com.example.android.dailyplanner.interfaces.EventCallBack
 
 class EventDetailViewModel (val interactor: Interactor) : ViewModel(){
 
@@ -44,7 +44,7 @@ class EventDetailViewModel (val interactor: Interactor) : ViewModel(){
 
 
     fun load(eventId: String){
-        interactor.getEventById(eventId, object : EventCallBack{
+        interactor.getEventById(eventId, object : EventCallBack {
             override fun onSuccess(event: EventRepo) {
                 _isLoading.value = false
                 _eventLiveData.postValue(interactor.getEvent(event))

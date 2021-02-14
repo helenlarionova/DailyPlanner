@@ -2,12 +2,11 @@ package com.example.android.dailyplanner.interactor
 
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.entity.EventRepo
-import com.example.android.dailyplanner.extensions.toStringWithFormat
-import com.example.android.dailyplanner.repository.EventCallBack
-import com.example.android.dailyplanner.repository.EventListCallBack
+import com.example.android.dailyplanner.interfaces.EventCallBack
+import com.example.android.dailyplanner.interfaces.EventListCallBack
 import com.example.android.dailyplanner.repository.Repository
-import com.example.android.dailyplanner.utils.*
-import java.text.SimpleDateFormat
+import com.example.android.dailyplanner.utils.convertToEvent
+import com.example.android.dailyplanner.utils.convertToEventRepo
 import java.util.*
 
 class Interactor(val repository : Repository){

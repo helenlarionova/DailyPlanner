@@ -7,12 +7,9 @@ import com.applandeo.materialcalendarview.EventDay
 import com.example.android.dailyplanner.entity.Event
 import com.example.android.dailyplanner.entity.EventRepo
 import com.example.android.dailyplanner.interactor.Interactor
-import com.example.android.dailyplanner.repository.EventListCallBack
+import com.example.android.dailyplanner.interfaces.EventListCallBack
 import com.example.android.dailyplanner.utils.dateFormatPatternFull
-import com.example.android.dailyplanner.utils.localDateTimeToDate
-import java.lang.Exception
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel() {
@@ -49,22 +46,22 @@ class AllDailyEventsViewModel (val interactor: Interactor) : ViewModel() {
     }
 
     private fun getAllDailyEvents(date: Date){
-            interactor.getAllDailyEvents(date, object :EventListCallBack{
-                override fun onSuccess(list: List<EventRepo>) {
-                    _isLoading.value = false
-                    _events.value = interactor.getListEvent(list)
-                }
+        interactor.getAllDailyEvents(date, object : EventListCallBack {
+            override fun onSuccess(list: List<EventRepo>) {
+                _isLoading.value = false
+                _events.value = interactor.getListEvent(list)
+            }
 
-                override fun onLoading() {
-                    _isLoading.value = true
-                }
+            override fun onLoading() {
+                _isLoading.value = true
+            }
 
-                override fun onError(exception: Exception) {
-                    _showError.value = true
-                    _isLoading.value = false
-                }
+            override fun onError(exception: Exception) {
+                _showError.value = true
+                _isLoading.value = false
+            }
 
-            })
+        })
     }
 
     fun onDayClicked(day : EventDay){
