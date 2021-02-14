@@ -1,10 +1,10 @@
 package com.example.android.dailyplanner.repository
 
-import com.example.android.dailyplanner.EventCallBack
-import com.example.android.dailyplanner.EventListCallBack
 import com.example.android.dailyplanner.entity.EventRepo
 import com.example.android.dailyplanner.extensions.atEndOfDay
 import com.example.android.dailyplanner.extensions.atStartOfDay
+import com.example.android.dailyplanner.interfaces.EventCallBack
+import com.example.android.dailyplanner.interfaces.EventListCallBack
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import kotlin.collections.ArrayList
